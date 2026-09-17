@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Petualangan di Daerah Tempat Tinggalku - IPAS Kelas 4</title>
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --accent-green: #4caf50;
+            --light-green: #e8f5e9;
+            --primary-blue: #0288d1;
+            --light-blue: #e1f5fe;
+            --primary-yellow: #fbc02d;
+            --light-yellow: #fffde7;
+            --primary-orange: #ff9800;
+            --dark-orange: #f57c00;
+            --bg-color: #f4f9f4;
+            --card-bg: #ffffff;
+            --text-color: #263238;
+            --text-light: #607d8b;
+            --border-radius: 16px;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 12px 28px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        #app-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--card-bg);
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-green), var(--accent-green));
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            backdrop-filter: blur(5px);
+        }
+
+        nav {
+            background: white;
+            border-top: 2px solid #e0e0e0;
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .nav-btn .icon {
+            font-size: 1.4rem;
+            margin-bottom: 2px;
+        }
+
+        .nav-btn.active, .nav-btn:hover {
+            color: var(--primary-green);
+            background-color: var(--light-green);
+        }
+
+        main {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover, .btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 6px rgba(255, 152, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--primary-blue), #0277bd);
+            box-shadow: 0 4px 12px rgba(2, 136, 209, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-green);
+            border: 2px solid var(--primary-green);
+            box-shadow: none;
+        }
+
+        .map-trail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .map-node {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid #b0bec5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .map-node.unlocked {
+            border-color: var(--primary-orange);
+            background: #fff8e1;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        .map-node.completed {
+            border-color: var(--accent-green);
+            background: var(--light-green);
+            animation: none;
+        }
+
+        .map-node .node-icon {
+            font-size: 2rem;
+        }
+
+        .map-node .node-label {
+            position: absolute;
+            bottom: -22px;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 8px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .node-zigzag-left { transform: translateX(-50px); }
+        .node-zigzag-right { transform: translateX(50px); }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            border: 1px solid #edf2f7;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: var(--primary-green);
+        }
+
+        .card-header h2 {
+            font-size: 1.25rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green), var(--primary-yellow));
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease-out;
+        }
+
+        /* Drag & Drop Styles */
+        .drag-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .drag-item {
+            background: var(--light-blue);
+            border: 2px dashed var(--primary-blue);
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .drop-zone {
+            background: #fafafa;
+            border: 2px dashed #ccc;
+            padding: 16px;
+            border-radius: 12px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 6px;
+            font-weight: 500;
+            color: #777;
+        }
+
+        .drop-zone.filled {
+            background: var(--light-green);
+            border-color: var(--accent-green);
+            color: var(--primary-green);
+            font-weight: bold;
+        }
+
+        /* Responsive styling for small phones */
+        @media (max-width: 480px) {
+            header { padding: 10px; }
+            .header-title { font-size: 0.95rem; }
+            main { padding: 12px; }
+            .card { padding: 15px; }
+            .node-zigzag-left { transform: translateX(-30px); }
+            .node-zigzag-right { transform: translateX(30px); }
+        }
+
+        canvas#confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- Top Navigation Bar -->
+        <header>
+            <div class="header-title">
+                🧭 <span>Penjelajah Cilik</span>
+            </div>
+            <div class="header-stats">
+                <div class="stat-badge">⭐ <span id="score-display">0</span></div>
+                <div class="stat-badge">🏆 <span id="badge-count">0</span></div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content">
+
+            <!-- COVER PAGE -->
+            <section id="page-cover" class="page active">
+                <div class="card" style="text-align: center; padding: 30px 20px;">
+                    <div style="font-size: 4rem; margin-bottom: 10px; animation: bounce 2s infinite;">🧭</div>
+                    <h1 style="color: var(--primary-green); font-size: 1.6rem; margin-bottom: 5px;">PETUALANGAN DI DAERAH TEMPAT TINGGALKU</h1>
+                    <p style="color: var(--primary-orange); font-weight: bold; font-size: 0.95rem; margin-bottom: 15px;">IPAS Kelas 4 – Bab 3</p>
+                    <div style="background: var(--light-yellow); padding: 12px; border-radius: 12px; border: 1px solid var(--primary-yellow); margin-bottom: 20px;">
+                        <p style="font-size: 0.9rem; color: #5d4037;"><strong>Misi Penjelajah:</strong><br>"Bisakah kamu mengenali daerah tempat tinggalmu hanya menggunakan peta?"</p>
+                    </div>
+                    <button class="btn" onclick="app.navigateTo('petunjuk')">🚀 Mulai Petualangan</button>
+                    <button class="btn btn-outline" style="margin-top: 10px;" onclick="app.navigateTo('tujuan')">🎯 Tujuan Pembelajaran</button>
+                    <button class="btn btn-outline" style="margin-top: 10px; border-color: #e57373; color: #e57373;" onclick="app.resetProgress()">🔄 Reset Progres</button>
+                </div>
+            </section>
+
+            <!-- PETUNJUK PAGE -->
+            <section id="page-petunjuk" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>📜</span>
+                        <h2>Petunjuk Petualangan</h2>
+                    </div>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #455a64;">
+                        <li>Selesaikan setiap <strong>Pos Petualangan</strong> secara berurutan.</li>
+                        <li>Dapatkan <strong>10 Poin ⭐</strong> setiap kali menjawab tantangan dengan benar.</li>
+                        <li>Kumpulkan <strong>Lencana Spesialis 🏆</strong> di setiap pos!</li>
+                        <li>Gunakan fitur navigasi di bawah untuk melihat Peta Utama atau Koleksi Lencana.</li>
+                    </ul>
+                    <button class="btn" onclick="app.navigateTo('tujuan')">Lanjut: Tujuan Pembelajaran ➡️</button>
+                </div>
+            </section>
+
+            <!-- TUJUAN PEMBELAJARAN PAGE -->
+            <section id="page-tujuan" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>🎯</span>
+                        <h2>Tujuan Pembelajaran</h2>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="display: flex; gap: 10px; background: var(--light-green); padding: 10px; border-radius: 10px;">
+                            <span>🗺️</span>
+                            <p style="font-size: 0.9rem;">Menjelaskan pengertian peta dan komponen-komponen utamanya.</p>
+                        </div>
+                        <div style="display: flex; gap: 10px; background: var(--light-blue); padding: 10px; border-radius: 10px;">
+                            <span>🔎</span>
+                            <p style="font-size: 0.9rem;">Membaca dan mengidentifikasi batas-batas wilayah tempat tinggal.</p>
+                        </div>
+                        <div style="display: flex; gap: 10px; background: var(--light-yellow); padding: 10px; border-radius: 10px;">
+                            <span>🏔️</span>
+                            <p style="font-size: 0.9rem;">Mengenali ragam bentang alam (daratan dan perairan) di daerah sekitar.</p>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="app.navigateTo('peta')">Buka Peta Petualangan 🗺️</button>
+                </div>
+            </section>
+
+            <!-- PETA UTAMA / MAP MENU -->
+            <section id="page-peta" class="page">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <h2 style="color: var(--primary-green);">🗺️ Peta Petualangan</h2>
+                    <p style="font-size: 0.85rem; color: var(--text-light);">Ketuk pos yang terbuka untuk menjelajah!</p>
+                </div>
+
+                <div class="map-trail" id="map-trail-container">
+                    <!-- Map nodes will be generated dynamically -->
+                </div>
+            </section>
+
+            <!-- POS 1: KENALI PETA -->
+            <section id="page-pos1" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>🧭</span>
+                        <h2>Pos 1: Kenali Peta</h2>
+                    </div>
+                    <p style="margin-bottom: 15px; font-size: 0.95rem;">
+                        <strong>Peta</strong> adalah gambaran permukaan bumi pada bidang datar dengan skala tertentu.
+                    </p>
+
+                    <div style="background: var(--light-green); padding: 12px; border-radius: 12px; margin-bottom: 15px; font-size: 0.9rem;">
+                        🎯 <strong>Misi Match Game:</strong> Cocokkan jenis peta di bawah ini dengan contohnya! (Klik Pilihan -> Klik Wadah)
+                    </div>
+
+                    <div id="pos1-game">
+                        <div class="drag-container" id="pos1-items">
+                            <div class="drag-item" onclick="app.games.pos1.selectItem('Atlas', this)">📖 Atlas Buku</div>
+                            <div class="drag-item" onclick="app.games.pos1.selectItem('Google Maps', this)">📱 Aplikasi Google Maps</div>
+                            <div class="drag-item" onclick="app.games.pos1.selectItem('Globe', this)">🌐 Globe Bola Dunia</div>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <label style="font-weight: bold; font-size: 0.85rem;">1. Peta Konvensional (Cetak):</label>
+                            <div class="drop-zone" id="zone-konvensional" onclick="app.games.pos1.dropItem('Peta Konvensional')">Ketuk di sini</div>
+
+                            <label style="font-weight: bold; font-size: 0.85rem; margin-top: 10px; display: block;">2. Peta Digital:</label>
+                            <div class="drop-zone" id="zone-digital" onclick="app.games.pos1.dropItem('Peta Digital')">Ketuk di sini</div>
+
+                            <label style="font-weight: bold; font-size: 0.85rem; margin-top: 10px; display: block;">3. Model Tiruan Bumi 3D:</label>
+                            <div class="drop-zone" id="zone-globe" onclick="app.games.pos1.dropItem('Globe Model')">Ketuk di sini</div>
+                        </div>
+
+                        <button class="btn" style="margin-top: 20px;" onclick="app.games.pos1.checkAnswer()">Periksa Jawaban 🔍</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- POS 2: BACA PETA -->
+            <section id="page-pos2" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>🗺️</span>
+                        <h2>Pos 2: Komponen Peta</h2>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;">Ketuk tombol elemen peta di bawah ini untuk mempelajari fungsinya!</p>
+
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;">
+                        <button class="btn btn-secondary" onclick="app.showPopup('🏷️ Judul Peta', 'Menunjukkan nama daerah atau isi peta, misalnya: Peta Kabupaten Bandung.')">🏷️ Judul</button>
+                        <button class="btn btn-secondary" onclick="app.showPopup('📋 Legenda', 'Penjelasan arti dari simbol-simbol yang ada pada peta.')">📋 Legenda</button>
+                        <button class="btn btn-secondary" onclick="app.showPopup('🧭 Arah Angin', 'Petunjuk arah mata angin (Utara, Selatan, Timur, Barat).')">🧭 Arah Angin</button>
+                        <button class="btn btn-secondary" onclick="app.showPopup('📏 Skala Peta', 'Perbandingan jarak pada peta dengan jarak sebenarnya di lapangan.')">📏 Skala</button>
+                        <button class="btn btn-secondary" onclick="app.showPopup('🔴 Simbol Peta', 'Tanda khusus seperti titik kota, gambar gunung, atau garis sungai.')">🔴 Simbol</button>
+                        <button class="btn btn-secondary" onclick="app.showPopup('🖼️ Garis Tepi', 'Garis pembatas wilayah pada peta agar terlihat rapi.')">🖼️ Garis Tepi</button>
+                    </div>
+
+                    <div style="background: var(--light-yellow); padding: 12px; border-radius: 12px; font-size: 0.85rem;">
+                        💡 <strong>Kuis Singkat:</strong> Bagian peta mana yang menjelaskan arti warna dan gambar simbol?
+                        <div style="display: flex; gap: 10px; margin-top: 8px;">
+                            <button class="btn" style="padding: 6px; font-size: 0.85rem;" onclick="app.checkQuickQuiz('Legenda', true, 'pos2')">Legenda</button>
+                            <button class="btn btn-outline" style="padding: 6px; font-size: 0.85rem;" onclick="app.checkQuickQuiz('Judul', false, 'pos2')">Judul</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- POS 3: DAERAHKU -->
+            <section id="page-pos3" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>🏘️</span>
+                        <h2>Pos 3: Identitas Daerahku</h2>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;">Lengkapi data tempat tinggalmu untuk membuat Kartu Identitas Penjelajah!</p>
+
+                    <form id="pos3-form" onsubmit="event.preventDefault(); app.games.pos3.saveCard();">
+                        <div style="display: flex; flex-direction: column; gap: 10px; text-align: left;">
+                            <label style="font-size: 0.85rem; font-weight: bold;">Provinsi:</label>
+                            <input type="text" id="input-provinsi" placeholder="Contoh: Jawa Barat" required style="padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+
+                            <label style="font-size: 0.85rem; font-weight: bold;">Kabupaten / Kota:</label>
+                            <input type="text" id="input-kota" placeholder="Contoh: Bandung" required style="padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+
+                            <label style="font-size: 0.85rem; font-weight: bold;">Kecamatan:</label>
+                            <input type="text" id="input-kecamatan" placeholder="Contoh: Coblong" required style="padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+                        </div>
+                        <button type="submit" class="btn" style="margin-top: 15px;">🎴 Buat Kartu Penjelajah</button>
+                    </form>
+
+                    <div id="pos3-card-result" style="display: none; margin-top: 15px; background: linear-gradient(135deg, #e1f5fe, #b3e5fc); padding: 15px; border-radius: 12px; border: 2px solid var(--primary-blue);">
+                        <h3 style="color: var(--primary-blue); font-size: 1rem; text-align: center; margin-bottom: 8px;">🆔 Kartu Penjelajah Wilayah</h3>
+                        <p style="font-size: 0.9rem;">📍 <strong>Provinsi:</strong> <span id="res-prov"></span></p>
+                        <p style="font-size: 0.9rem;">🏙️ <strong>Kota/Kab:</strong> <span id="res-kota"></span></p>
+                        <p style="font-size: 0.9rem;">🏡 <strong>Kecamatan:</strong> <span id="res-kec"></span></p>
+                        <button class="btn btn-secondary" style="margin-top: 10px;" onclick="app.completePos(3, 'Detektif Wilayah')">Selesaikan Pos 3 ✨</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- POS 4: BATAS WILAYAH -->
+            <section id="page-pos4" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>🔎</span>
+                        <h2>Pos 4: Batas Wilayah (Siapa Tetanggaku?)</h2>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 12px;">Peta membantu kita mengetahui batas wilayah di sebelah Utara, Selatan, Timur, dan Barat.</p>
+
+                    <!-- SVG Compass Diagram -->
+                    <div style="text-align: center; margin: 15px 0;">
+                        <svg width="160" height="160" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="#f1f8e9" stroke="#4caf50" stroke-width="3"/>
+                            <line x1="50" y1="10" x2="50" y2="90" stroke="#a5d6a7" stroke-width="2"/>
+                            <line x1="10" y1="50" x2="90" y2="50" stroke="#a5d6a7" stroke-width="2"/>
+                            <text x="50" y="22" font-size="10" font-weight="bold" fill="#2e7d32" text-anchor="middle">UTARA (U)</text>
+                            <text x="50" y="86" font-size="10" font-weight="bold" fill="#2e7d32" text-anchor="middle">SELATAN (S)</text>
+                            <text x="82" y="53" font-size="10" font-weight="bold" fill="#2e7d32" text-anchor="middle">T</text>
+                            <text x="18" y="53" font-size="10" font-weight="bold" fill="#2e7d32" text-anchor="middle">B</text>
+                            <polygon points="50,25 45,50 50,45 55,50" fill="#e53935"/>
+                            <polygon points="50,75 45,50 50,55 55,50" fill="#1e88e5"/>
+                        </svg>
+                    </div>
+
+                    <div style="background: var(--light-yellow); padding: 12px; border-radius: 12px; font-size: 0.85rem;">
+                        ❓ <strong>Tantangan:</strong> Jika di sebelah Utara daerahmu terdapat Laut, maka daerahmu berbatasan langsung dengan perairan di sebelah...
+                        <div style="display: flex; gap: 10px; margin-top: 8px;">
+                            <button class="btn" style="padding: 6px; font-size: 0.85rem;" onclick="app.completePos(4, 'Detektif Wilayah')">Utara</button>
+                            <button class="btn btn-outline" style="padding: 6px; font-size: 0.85rem;" onclick="app.showPopup('Salah', 'Coba perhatikan arah mata anginnya kembali!')">Selatan</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- POS 5: BENTANG ALAM -->
+            <section id="page-pos5" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>🏔️</span>
+                        <h2>Pos 5: Bentang Alam</h2>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;">Tebak jenis bentang alam berikut dari gambarnya!</p>
+
+                    <!-- SVG Landscape Illustration -->
+                    <div style="width: 100%; height: 140px; background: #e0f7fa; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-bottom: 15px;">
+                        <svg width="100%" height="100%" viewBox="0 0 300 120" preserveAspectRatio="none">
+                            <!-- Mountains -->
+                            <polygon points="20,120 90,30 160,120" fill="#81c784"/>
+                            <polygon points="100,120 180,20 260,120" fill="#4caf50"/>
+                            <!-- Snow cap -->
+                            <polygon points="180,20 165,42 180,38 195,42" fill="#ffffff"/>
+                            <!-- River -->
+                            <path d="M140,120 Q160,90 150,70" stroke="#29b6f6" stroke-width="12" fill="none"/>
+                        </svg>
+                        <span style="position: absolute; bottom: 8px; right: 12px; background: rgba(255,255,255,0.8); padding: 2px 8px; border-radius: 8px; font-size: 0.8rem; font-weight: bold;">Gambar 1</span>
+                    </div>
+
+                    <p style="font-size: 0.9rem; font-weight: bold; margin-bottom: 8px;">Permukaan bumi yang menjulang tinggi dibanding sekitarnya disebut...</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="btn" onclick="app.completePos(5, 'Sahabat Alam')">🏔️ Gunung / Pegunungan</button>
+                        <button class="btn btn-outline" onclick="app.showPopup('Kurang Tepat', 'Pantai adalah wilayah perbatasan daratan dan laut.')">🏖️ Pantai</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- POS 6: HUBUNGKAN INFORMASI -->
+            <section id="page-pos6" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>🔗</span>
+                        <h2>Pos 6: Studi Kasus</h2>
+                    </div>
+                    <div style="background: var(--light-blue); padding: 12px; border-radius: 12px; font-size: 0.9rem; margin-bottom: 15px;">
+                        📖 <strong>Cerita Penjelajah:</strong><br>
+                        "Desa Sukamaju dan Desa Permai dipisahkan oleh sebuah aliran air yang sangat lebar dan mengalir dari gunung ke laut."
+                    </div>
+
+                    <p style="font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">Apa fungsi bentang alam alami tersebut bagi kedua desa?</p>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="btn" onclick="app.completePos(6, 'Ahli Hubungan')">A. Sebagai batas wilayah alami desa</button>
+                        <button class="btn btn-outline" onclick="app.showPopup('Salah', 'Sungai bukan merupakan simbol arah mata angin!')">B. Sebagai pengukur arah angin</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- POS 7: TANTANGAN PETA -->
+            <section id="page-pos7" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>🎯</span>
+                        <h2>Pos 7: Tantangan Penjelajah</h2>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;">Amatah peta desa sederhana di bawah ini!</p>
+
+                    <!-- Interactive Simple Mini Map -->
+                    <div style="background: #f0f4c3; padding: 15px; border-radius: 12px; border: 2px solid #c0ca33; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; font-size: 0.8rem; font-weight: bold; margin-bottom: 15px;">
+                        <div style="background: #a5d6a7; padding: 10px; border-radius: 8px;">🏔️ Gunung</div>
+                        <div style="background: #fff59d; padding: 10px; border-radius: 8px;">🏫 Sekolah</div>
+                        <div style="background: #81d4fa; padding: 10px; border-radius: 8px;">🌊 Sungai</div>
+                        <div style="background: #ffcc80; padding: 10px; border-radius: 8px;">🏪 Pasar</div>
+                        <div style="background: #e0e0e0; padding: 10px; border-radius: 8px;">🏠 Rumahku</div>
+                        <div style="background: #c8e6c9; padding: 10px; border-radius: 8px;">🌳 Hutan</div>
+                    </div>
+
+                    <p style="font-size: 0.9rem; font-weight: bold; margin-bottom: 8px;">Dimanakah letak Sekolah jika dilihat dari posisi Rumahku?</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <button class="btn" onclick="app.completePos(7, 'Penakluk Peta')">Utara (Atas)</button>
+                        <button class="btn btn-outline" onclick="app.showPopup('Salah', 'Selatan adalah arah ke bawah.')">Selatan (Bawah)</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EVALUASI / QUIZ PAGE -->
+            <section id="page-evaluasi" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>🏆</span>
+                        <h2>Evaluasi Penjelajah</h2>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="quiz-progress"></div>
+                    </div>
+                    <div id="quiz-container">
+                        <!-- Dynamic quiz content -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- REFLEKSI PAGE -->
+            <section id="page-refleksi" class="page">
+                <div class="card" style="text-align: center;">
+                    <div class="card-header" style="justify-content: center;">
+                        <span>💭</span>
+                        <h2>Refleksi Belajar</h2>
+                    </div>
+                    <p style="font-size: 0.95rem; margin-bottom: 15px;">Bagaimana perasaanmu setelah mempelajari materi peta dan bentang alam hari ini?</p>
+
+                    <div style="display: flex; justify-content: space-around; font-size: 2.5rem; margin-bottom: 20px;">
+                        <span style="cursor: pointer; transition: transform 0.2s;" onclick="app.selectEmotion('😀', 'Hebat! Kamu sangat bersemangat!')">😀</span>
+                        <span style="cursor: pointer; transition: transform 0.2s;" onclick="app.selectEmotion('🙂', 'Bagus! Kamu menikmati petualangan ini.')">🙂</span>
+                        <span style="cursor: pointer; transition: transform 0.2s;" onclick="app.selectEmotion('😐', 'Tetap semangat, latihan terus ya!')">😐</span>
+                        <span style="cursor: pointer; transition: transform 0.2s;" onclick="app.selectEmotion('😟', 'Jangan menyerah! Kamu bisa mengulanginya lagi.')">😟</span>
+                    </div>
+
+                    <div id="emotion-feedback" style="font-weight: bold; color: var(--primary-green); margin-bottom: 15px; min-height: 24px;"></div>
+                    <button class="btn" onclick="app.navigateTo('lencana')">Lihat Koleksi Lencana 🏆</button>
+                </div>
+            </section>
+
+            <!-- LENCANA / BADGES GALLERY PAGE -->
+            <section id="page-lencana" class="page">
+                <div class="card">
+                    <div class="card-header">
+                        <span>🎖️</span>
+                        <h2>Koleksi Lencana</h2>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 15px;">Kumpulkan semua lencana dengan menyelesaikan pos petualangan!</p>
+
+                    <div id="badges-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <!-- Dynamic badges grid -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- PENUTUP / FINAL SUMMARY PAGE -->
+            <section id="page-penutup" class="page">
+                <div class="card" style="text-align: center; padding: 30px 15px;">
+                    <div style="font-size: 4rem; margin-bottom: 10px;">🎉</div>
+                    <h2 style="color: var(--primary-green); font-size: 1.5rem; margin-bottom: 10px;">Selamat Penjelajah Cilik!</h2>
+                    <p style="font-size: 0.95rem; margin-bottom: 15px;">Kamu telah berhasil menjelajahi peta dan bentang alam tempat tinggalmu!</p>
+
+                    <div style="background: var(--light-yellow); padding: 15px; border-radius: 12px; border: 2px dashed var(--primary-yellow); margin-bottom: 20px;">
+                        <p style="font-size: 1rem; font-weight: bold; color: #5d4037;">Skor Akhir Kamu:</p>
+                        <p style="font-size: 2.2rem; font-weight: bold; color: var(--dark-orange);" id="final-score">0</p>
+                    </div>
+
+                    <button class="btn" onclick="app.navigateTo('peta')">🗺️ Kembali ke Peta</button>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Bottom Tab Navigation Bar -->
+        <nav>
+            <button class="nav-btn active" onclick="app.navigateTo('peta')">
+                <span class="icon">🗺️</span>
+                <span>Peta</span>
+            </button>
+            <button class="nav-btn" onclick="app.navigateTo('evaluasi')">
+                <span class="icon">📝</span>
+                <span>Evaluasi</span>
+            </button>
+            <button class="nav-btn" onclick="app.navigateTo('refleksi')">
+                <span class="icon">💭</span>
+                <span>Refleksi</span>
+            </button>
+            <button class="nav-btn" onclick="app.navigateTo('lencana')">
+                <span class="icon">🏆</span>
+                <span>Lencana</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Modal Popup for Explanations and Messages -->
+    <div class="modal-overlay" id="modal-popup">
+        <div class="modal-card">
+            <h3 id="modal-title" style="color: var(--primary-green); margin-bottom: 10px;">Pesan</h3>
+            <p id="modal-body" style="font-size: 0.95rem; color: #455a64; margin-bottom: 20px;"></p>
+
+            <button class="btn" onclick="app.closeModal()">Mengerti! 👍</button>
+        </div>
+    </div>
+
+    <!-- Confetti Canvas for celebration -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <script>
+        /*
+         * Application Logic Engine (Vanilla JS)
+         */
+
+        // Web Audio Synthesizer for Offline Sound Effects
+        const soundEngine = {
+            play(type) {
+                try {
+                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    if (type === 'correct') {
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(659.25, ctx.currentTime + 0.15);
+                        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                        osc.start(); osc.stop(ctx.currentTime + 0.3);
+                    } else if (type === 'wrong') {
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(180, ctx.currentTime);
+                        osc.frequency.linearRampToValueAtTime(110, ctx.currentTime + 0.25);
+                        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                        osc.start(); osc.stop(ctx.currentTime + 0.3);
+                    } else if (type === 'fanfare') {
+                        [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+                            const o = ctx.createOscillator();
+                            const g = ctx.createGain();
+                            o.type = 'triangle';
+                            o.frequency.setValueAtTime(f, ctx.currentTime + i * 0.1);
+                            g.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.1);
+                            g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.1 + 0.25);
+                            o.connect(g); g.connect(ctx.destination);
+                            o.start(ctx.currentTime + i * 0.1);
+                            o.stop(ctx.currentTime + i * 0.1 + 0.25);
+                        });
+                    }
+                } catch(e) {}
+            }
+        };
+
+        const app = {
+            state: {
+                score: 0,
+                unlockedPos: 1,
+                badges: [],
+                currentQuizIndex: 0,
+                userData: {}
+            },
+
+            allBadges: [
+                { title: "Penjelajah Pemula", icon: "🧭", pos: 1, desc: "Mengenali definisi dan jenis peta" },
+                { title: "Pembaca Peta", icon: "🗺️", pos: 2, desc: "Memahami komponen-komponen peta" },
+                { title: "Detektif Wilayah", icon: "🔎", pos: 3, desc: "Mengidentifikasi batas wilayah daerah" },
+                { title: "Sahabat Alam", icon: "🏔️", pos: 5, desc: "Mengenali ragam bentang alam" },
+                { title: "Ahli Hubungan", icon: "🔗", pos: 6, desc: "Menganalisis studi kasus bentang alam" },
+                { title: "Penakluk Peta", icon: "🎯", pos: 7, desc: "Menyelesaikan tantangan baca peta" },
+                { title: "Penjelajah Hebat", icon: "🏆", pos: 8, desc: "Lulus evaluasi dengan hasil luar biasa" }
+            ],
+
+            questions: [
+                {
+                    question: "Gambaran permukaan bumi pada bidang datar dengan skala tertentu disebut...",
+                    options: ["Peta", "Globe", "Atlas", "Foto"],
+                    answer: 0
+                },
+                {
+                    question: "Bagian peta yang menjelaskan arti simbol-simbol yang ada dinamakan...",
+                    options: ["Judul Peta", "Skala Peta", "Legenda", "Arah Angin"],
+                    answer: 2
+                },
+                {
+                    question: "Warna biru pada peta umum digunakan untuk menggambarkan bentang alam...",
+                    options: ["Pegunungan", "Perairan (Sungai/Laut)", "Hutan", "Dataran Tinggi"],
+                    answer: 1
+                },
+                {
+                    question: "Model tiruan bola bumi dalam bentuk tiga dimensi dinamakan...",
+                    options: ["Peta Digital", "Globe", "Kompas", "Atlas"],
+                    answer: 1
+                },
+                {
+                    question: "Arah mata angin yang menunjuk ke bagian atas pada peta standar adalah...",
+                    options: ["Selatan", "Barat", "Timur", "Utara"],
+                    answer: 3
+                },
+                {
+                    question: "Bentang alam berupa daratan yang menjulang tinggi dibanding sekitarnya adalah...",
+                    options: ["Sungai", "Gunung", "Danau", "Lembah"],
+                    answer: 1
+                },
+                {
+                    question: "Perbandingan jarak pada peta dengan jarak sebenarnya di muka bumi disebut...",
+                    options: ["Skala", "Legenda", "Simbol", "Judul"],
+                    answer: 0
+                },
+                {
+                    question: "Wilayah pertemuan antara daratan dengan lautan dinamakan...",
+                    options: ["Bukit", "Pantai", "Sungai", "Sawah"],
+                    answer: 1
+                },
+                {
+                    question: "Aplikasi Google Maps pada HP merupakan salah satu contoh peta...",
+                    options: ["Peta Konvensional", "Peta Timbul", "Peta Digital", "Peta Lukis"],
+                    answer: 2
+                },
+                {
+                    question: "Mengapa kita perlu mengetahui batas wilayah tempat tinggal kita?",
+                    options: [
+                        "Mengenal daerah tetangga dan menjaga kerukunan",
+                        "Agar bisa membuat jalan sendiri",
+                        "Supaya daerah menjadi sempit",
+                        "Tidak ada manfaatnya"
+                    ],
+                    answer: 0
+                }
+            ],
+
+            init() {
+                this.loadProgress();
+                this.updateUI();
+                this.renderMapNodes();
+                this.renderBadges();
+            },
+
+            loadProgress() {
+                const saved = localStorage.getItem('ipas_kelas4_progress');
+                if (saved) {
+                    try {
+                        this.state = JSON.parse(saved);
+                    } catch(e) {}
+                }
+            },
+
+            saveProgress() {
+                localStorage.setItem('ipas_kelas4_progress', JSON.stringify(this.state));
+                this.updateUI();
+            },
+
+            resetProgress() {
+                if (confirm("Apakah kamu yakin ingin mengulang petualangan dari awal?")) {
+                    localStorage.removeItem('ipas_kelas4_progress');
+                    this.state = {
+                        score: 0,
+                        unlockedPos: 1,
+                        badges: [],
+                        currentQuizIndex: 0,
+                        userData: {}
+                    };
+                    this.saveProgress();
+                    this.renderMapNodes();
+                    this.renderBadges();
+                    this.navigateTo('cover');
+                }
+            },
+
+            navigateTo(pageId) {
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                const target = document.getElementById(`page-${pageId}`);
+                if (target) {
+                    target.classList.add('active');
+                    window.scrollTo(0, 0);
+                }
+
+                if (pageId === 'evaluasi') {
+                    this.renderQuiz();
+                } else if (pageId === 'penutup') {
+                    document.getElementById('final-score').innerText = this.state.score;
+                }
+            },
+
+            addScore(pts) {
+                this.state.score += pts;
+                this.saveProgress();
+            },
+
+            unlockBadge(badgeTitle) {
+                if (!this.state.badges.includes(badgeTitle)) {
+                    this.state.badges.push(badgeTitle);
+                    this.saveProgress();
+                    this.renderBadges();
+                    soundEngine.play('fanfare');
+                    this.triggerConfetti();
+                    this.showPopup("🏆 LENCANA BARU!", `Selamat! Kamu mendapatkan lencana: ${badgeTitle}`);
+                }
+            },
+
+            completePos(posNum, badgeToUnlock) {
+                soundEngine.play('correct');
+                this.addScore(10);
+
+                if (posNum >= this.state.unlockedPos) {
+                    this.state.unlockedPos = posNum + 1;
+                }
+
+                if (badgeToUnlock) {
+                    this.unlockBadge(badgeToUnlock);
+                }
+
+                this.saveProgress();
+                this.renderMapNodes();
+                this.showPopup("🎉 POS SELESAI!", "Hebat, kamu berhasil menyelesaikan pos ini! Poin +10 ⭐");
+                this.navigateTo('peta');
+            },
+
+            renderMapNodes() {
+                const container = document.getElementById('map-trail-container');
+                container.innerHTML = '';
+
+                const nodes = [
+                    { id: 1, label: "Pos 1: Peta", icon: "🧭" },
+                    { id: 2, label: "Pos 2: Komponen", icon: "🗺️" },
+                    { id: 3, label: "Pos 3: Daerahku", icon: "🏘️" },
+                    { id: 4, label: "Pos 4: Batas", icon: "🔎" },
+                    { id: 5, label: "Pos 5: Alam", icon: "🏔️" },
+                    { id: 6, label: "Pos 6: Kasus", icon: "🔗" },
+                    { id: 7, label: "Pos 7: Tantangan", icon: "🎯" }
+                ];
+
+                nodes.forEach((n, idx) => {
+                    const isUnlocked = n.id <= this.state.unlockedPos;
+                    const isCompleted = n.id < this.state.unlockedPos;
+
+                    const div = document.createElement('div');
+                    let alignmentClass = idx % 2 === 0 ? 'node-zigzag-left' : 'node-zigzag-right';
+                    div.className = `map-node ${alignmentClass} ${isCompleted ? 'completed' : (isUnlocked ? 'unlocked' : '')}`;
+
+                    div.innerHTML = `
+                        <span class="node-icon">${isUnlocked ? n.icon : '🔒'}</span>
+                        <span class="node-label">${n.label}</span>
+                    `;
+
+                    if (isUnlocked) {
+                        div.onclick = () => app.navigateTo(`pos${n.id}`);
+                    }
+
+                    container.appendChild(div);
+                });
+            },
+
+            renderBadges() {
+                const grid = document.getElementById('badges-grid');
+                grid.innerHTML = '';
+
+                this.allBadges.forEach(b => {
+                    const isOwned = this.state.badges.includes(b.title);
+
+                    const card = document.createElement('div');
+                    card.style.cssText = `
+                        background: ${isOwned ? '#fffde7' : '#f5f5f5'};
+                        border: 2px solid ${isOwned ? '#fbc02d' : '#e0e0e0'};
+                        padding: 12px;
+                        border-radius: 12px;
+                        text-align: center;
+                        opacity: ${isOwned ? 1 : 0.6};
+                    `;
+
+                    card.innerHTML = `
+                        <div style="font-size: 2rem;">${b.icon}</div>
+                        <div style="font-weight: bold; font-size: 0.85rem; margin-top: 4px; color: ${isOwned ? '#5d4037' : '#9e9e9e'};">${b.title}</div>
+                        <div style="font-size: 0.75rem; color: #757575;">${b.desc}</div>
+                    `;
+
+                    grid.appendChild(card);
+                });
+            },
+
+            updateUI() {
+                document.getElementById('score-display').innerText = this.state.score;
+                document.getElementById('badge-count').innerText = this.state.badges.length;
+            },
+
+            renderQuiz() {
+                const container = document.getElementById('quiz-container');
+                const idx = this.state.currentQuizIndex;
+
+                if (idx >= this.questions.length) {
+                    this.unlockBadge("Penjelajah Hebat");
+                    this.navigateTo('penutup');
+                    return;
+                }
+
+                const q = this.questions[idx];
+                const progressPct = ((idx) / this.questions.length) * 100;
+                document.getElementById('quiz-progress').style.width = `${progressPct}%`;
+
+                container.innerHTML = `
+                    <div style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 8px;">Soal ${idx + 1} dari ${this.questions.length}</div>
+                    <p style="font-weight: bold; font-size: 0.95rem; margin-bottom: 15px;">${q.question}</p>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        ${q.options.map((opt, i) => `
+                            <button class="btn btn-outline" style="text-align: left; padding: 10px 15px;" onclick="app.answerQuiz(${i})">${opt}</button>
+                        `).join('')}
+                    </div>
+                `;
+            },
+
+            answerQuiz(selectedIndex) {
+                const idx = this.state.currentQuizIndex;
+                const q = this.questions[idx];
+
+                if (selectedIndex === q.answer) {
+                    soundEngine.play('correct');
+                    this.addScore(10);
+                    this.showPopup("✨ BENAR!", "Jawabanmu tepat sekali! Poin +10 ⭐");
+                } else {
+                    soundEngine.play('wrong');
+                    this.showPopup("❌ KURANG TEPAT", `Jawaban yang benar adalah: ${q.options[q.answer]}`);
+                }
+
+                this.state.currentQuizIndex++;
+                this.saveProgress();
+                this.renderQuiz();
+            },
+
+            showPopup(title, body) {
+                document.getElementById('modal-title').innerText = title;
+                document.getElementById('modal-body').innerText = body;
+                document.getElementById('modal-popup').classList.add('active');
+            },
+
+            closeModal() {
+                document.getElementById('modal-popup').classList.remove('active');
+            },
+
+            checkQuickQuiz(selected, isCorrect, pos) {
+                if (isCorrect) {
+                    this.completePos(2, 'Pembaca Peta');
+                } else {
+                    soundEngine.play('wrong');
+                    this.showPopup('Coba Lagi', 'Pilihanmu kurang tepat. Coba lagi!');
+                }
+            },
+
+            selectEmotion(emoji, msg) {
+                document.getElementById('emotion-feedback').innerText = `${emoji} ${msg}`;
+                soundEngine.play('correct');
+            },
+
+            triggerConfetti() {
+                const canvas = document.getElementById('confetti-canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                const particles = Array.from({ length: 50 }).map(() => ({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    color: ['#4caf50', '#ff9800', '#0288d1', '#fbc02d'][Math.floor(Math.random() * 4)],
+                    size: Math.random() * 8 + 4,
+                    speed: Math.random() * 3 + 2
+                }));
+
+                let frame = 0;
+                function loop() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach(p => {
+                        p.y += p.speed;
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(p.x, p.y, p.size, p.size);
+                    });
+
+                    if (frame++ < 100) requestAnimationFrame(loop);
+                    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+                loop();
+            },
+
+            /* Mini Games specific handlers */
+            games: {
+                pos1: {
+                    selected: null,
+                    selectItem(item, el) {
+                        this.selected = item;
+                        document.querySelectorAll('#pos1-items .drag-item').forEach(d => d.style.borderColor = 'var(--primary-blue)');
+                        el.style.borderColor = 'var(--primary-orange)';
+                        soundEngine.play('correct');
+                    },
+                    dropItem(type) {
+                        if (!this.selected) return;
+                        if (type === 'Peta Konvensional' && this.selected === 'Atlas') {
+                            document.getElementById('zone-konvensional').innerText = "✅ Atlas Buku (Sesuai)";
+                            document.getElementById('zone-konvensional').classList.add('filled');
+                        } else if (type === 'Peta Digital' && this.selected === 'Google Maps') {
+                            document.getElementById('zone-digital').innerText = "✅ Google Maps (Sesuai)";
+                            document.getElementById('zone-digital').classList.add('filled');
+                        } else if (type === 'Globe Model' && this.selected === 'Globe') {
+                            document.getElementById('zone-globe').innerText = "✅ Globe (Sesuai)";
+                            document.getElementById('zone-globe').classList.add('filled');
+                        }
+                    },
+                    checkAnswer() {
+                        const filled = document.querySelectorAll('#pos1-game .filled').length;
+                        if (filled === 3) {
+                            app.completePos(1, 'Penjelajah Pemula');
+                        } else {
+                            app.showPopup("Belum Selesai", "Cocokkan ketiga pilihan dengan tepat terlebih dahulu!");
+                        }
+                    }
+                },
+                pos3: {
+                    saveCard() {
+                        const prov = document.getElementById('input-provinsi').value;
+                        const kota = document.getElementById('input-kota').value;
+                        const kec = document.getElementById('input-kecamatan').value;
+
+                        document.getElementById('res-prov').innerText = prov;
+                        document.getElementById('res-kota').innerText = kota;
+                        document.getElementById('res-kec').innerText = kec;
+
+                        document.getElementById('pos3-card-result').style.display = 'block';
+                        soundEngine.play('correct');
+                    }
+                }
+            }
+        };
+
+        // Initialize App on DOM Loaded
+        window.addEventListener('DOMContentLoaded', () => {
+            app.init();
+        });
+    </script>
+</body>
+</html>
